@@ -1,0 +1,4 @@
+#! /usr/bin/env python3
+
+import bdt2cpp
+print(bdt2cpp.main())

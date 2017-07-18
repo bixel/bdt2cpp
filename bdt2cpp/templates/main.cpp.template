@@ -1,0 +1,13 @@
+#include <iostream>
+#include <vector>
+
+int main(int argc, char const *argv[]) {
+  std::cout << "Hello, world" << std::endl;
+
+  std::vector<double> input;
+  for(int i=1; i<argc; ++i){
+    input.push_back(std::strtod(argv[i], nullptr));
+  }
+
+  return 0;
+}

@@ -1,11 +1,13 @@
 from jinja2 import Template
 from os import path
 import re
+import numpy as np
 
 CUR_DIR = path.abspath('.')
 TEMPLATE_DIR = path.join(path.abspath(path.dirname(__file__)), 'templates')
 BRANCH_REGEX = re.compile('(?P<branch>\d+):\[(?P<feature>\w+)(?P<comp><)(?P<value>-?\d+\.\d+)\]')
 LEAF_REGEX = re.compile('(?P<leaf>\d+):leaf=(?P<value>-?\d+\.\d+)')
+FEATURE_REGEX = re.compile('\w(?P<id>\d+)')
 
 
 class Node:
@@ -17,7 +19,7 @@ class Node:
 
         match_leaf = LEAF_REGEX.search(line)
         if match_leaf:
-            self.weight = match_leaf.groupdict().get('value')
+            self.weight = float(match_leaf.groupdict().get('value'))
             self.final = True
         else:
             self.weight = 0
@@ -27,17 +29,23 @@ class Node:
         if match_branch:
             self.cut_value = match_branch.groupdict().get('value')
             self.feature = match_branch.groupdict().get('feature')
+            feature_match = FEATURE_REGEX.search(self.feature)
+            self.feature_index = feature_match.groupdict().get('id')
         else:
             self.cut_value = None
             self.feature = None
+            self.feature_index = None
 
     def __str__(self):
         if self.final:
-            return self.level*'  ' + self.weight
+            return f'{self.level*"  "}{self.weight}'
         else:
             return (f'{self.level*"  "}{self.feature} < {self.cut_value}\n'
                     f'{self.left}\n'
                     f'{self.right}')
+
+    def __iter__(self):
+        return [self].__iter__()
 
     @property
     def root(self):
@@ -86,7 +94,7 @@ def parse_model(filename):
     return trees
 
 
-def main(output_file='main.cpp.template'):
+def main(output_file='main.cpp'):
     trees = parse_model('/Users/kheinicke/playground/random.model')
 
     with open(path.join(TEMPLATE_DIR, 'main.cpp.template'), 'r') as f:

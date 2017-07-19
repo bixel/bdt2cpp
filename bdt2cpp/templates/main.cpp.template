@@ -1,6 +1,23 @@
 #include <iostream>
 #include <vector>
 
+double tree(const std::vector<double>& features)
+{
+  double sum = 0;
+  {% for node in trees recursive -%}
+    {% if not node.final -%}
+      if(features[{{ node.feature_index }}] < {{ node.cut_value }}){
+        {{ loop(node.left) }}
+      } else {
+        {{ loop(node.right) }}
+      }
+    {%- else -%}
+      sum += {{ node.weight }};
+    {%- endif %}
+  {%- endfor %}
+  return sum;
+}
+
 int main(int argc, char const *argv[]) {
   std::cout << "Hello, world" << std::endl;
 
@@ -8,6 +25,8 @@ int main(int argc, char const *argv[]) {
   for(int i=1; i<argc; ++i){
     input.push_back(std::strtod(argv[i], nullptr));
   }
+
+  std::cout << tree(input) << std::endl;
 
   return 0;
 }

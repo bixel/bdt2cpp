@@ -1,5 +1,22 @@
 #! /usr/bin/env python3
 
 import bdt2cpp
+import argparse
+import sys
 
-bdt2cpp.main()
+p = argparse.ArgumentParser()
+p.add_argument('--print-tree', action='store_true', help='''print the parsed
+               tree''')
+p.add_argument('-m', '--model', type=str, help='''filename of the XGBoost model
+               you want to transpile''')
+p.add_argument('-o', '--output', type=str, default='main.cpp', help='''output
+               filename to which the transpiled template will be written.
+               The file will be overwritten without warning!''')
+
+args = p.parse_args()
+
+if args.print_tree:
+    print(*bdt2cpp.parse_model(args.model), sep='\n\n')
+    sys.exit()
+
+bdt2cpp.main(args.model, output_file=args.output)

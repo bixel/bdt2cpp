@@ -1,13 +1,16 @@
 from jinja2 import Template
-from os import path
+from os import path, getcwd
 import re
 import numpy as np
 
-CUR_DIR = path.abspath('.')
+CUR_DIR = getcwd()
 TEMPLATE_DIR = path.join(path.abspath(path.dirname(__file__)), 'templates')
 BRANCH_REGEX = re.compile('(?P<branch>\d+):\[(?P<feature>\w+)(?P<comp><)(?P<value>-?\d+\.\d+)\]')
 LEAF_REGEX = re.compile('(?P<leaf>\d+):leaf=(?P<value>-?\d+\.\d+)')
 FEATURE_REGEX = re.compile('\w(?P<id>\d+)')
+TEMPLATES = {
+    'cpp': 'main.cpp.template',
+}
 
 
 class Node:
@@ -94,10 +97,10 @@ def parse_model(filename):
     return trees
 
 
-def main(output_file='main.cpp'):
-    trees = parse_model('/Users/kheinicke/playground/random.model')
+def main(input_file, output_file='main.cpp', template='cpp'):
+    trees = parse_model(input_file)
 
-    with open(path.join(TEMPLATE_DIR, 'main.cpp.template'), 'r') as f:
+    with open(path.join(TEMPLATE_DIR, TEMPLATES[template]), 'r') as f:
         template = Template(f.read())
 
     with open(path.join(CUR_DIR, output_file), 'w') as f:

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 double tree(const std::vector<double>& features)
 {
@@ -26,7 +27,8 @@ int main(int argc, char const *argv[]) {
     input.push_back(std::strtod(argv[i], nullptr));
   }
 
-  std::cout << tree(input) << std::endl;
+  auto val = tree(input);
+  std::cout << val << "\n" << val / (1 + std::fabs(val)) << std::endl;
 
   return 0;
 }

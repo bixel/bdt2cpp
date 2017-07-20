@@ -4,9 +4,10 @@ import re
 import numpy as np
 
 CUR_DIR = getcwd()
+float_regex = '[+-]?\d(\.\d+)?([eE][+-]?\d+)?'
 TEMPLATE_DIR = path.join(path.abspath(path.dirname(__file__)), 'templates')
-BRANCH_REGEX = re.compile('(?P<branch>\d+):\[(?P<feature>\w+)(?P<comp><)(?P<value>-?\d+\.\d+)\]')
-LEAF_REGEX = re.compile('(?P<leaf>\d+):leaf=(?P<value>-?\d+\.\d+)')
+BRANCH_REGEX = re.compile(f'(?P<branch>\d+):\[(?P<feature>\w+)(?P<comp><)(?P<value>{float_regex})\]')
+LEAF_REGEX = re.compile(f'(?P<leaf>\d+):leaf=(?P<value>{float_regex})')
 FEATURE_REGEX = re.compile('\w(?P<id>\d+)')
 TEMPLATES = {
     'cpp': 'main.cpp.template',

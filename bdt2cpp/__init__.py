@@ -1,4 +1,4 @@
-from jinja2 import Template
+import jinja2
 from os import path, getcwd
 import re
 import numpy as np
@@ -14,11 +14,16 @@ TEMPLATES = {
 
 
 class Node:
+    root_id_counter = 0
+
     def __init__(self, line, parent=None):
         self.left = None
         self.right = None
         self.parent = parent
         self.level = 0 if not parent else parent.level + 1
+        if not parent:
+            self.id = Node.root_id_counter
+            Node.root_id_counter += 1
 
         match_leaf = LEAF_REGEX.search(line)
         if match_leaf:
@@ -98,10 +103,14 @@ def parse_model(filename):
 
 
 def main(input_file, output_file='main.cpp', template='cpp'):
+    # template settings
+    env = jinja2.Environment(loader=jinja2.PackageLoader('bdt2cpp'),
+                             trim_blocks=True, lstrip_blocks=True)
+
     trees = parse_model(input_file)
 
-    with open(path.join(TEMPLATE_DIR, TEMPLATES[template]), 'r') as f:
-        template = Template(f.read())
+    # with open(, 'r') as f:
+    template = env.get_template(TEMPLATES[template])
 
     with open(path.join(CUR_DIR, output_file), 'w') as f:
         f.write(template.render(trees=trees))

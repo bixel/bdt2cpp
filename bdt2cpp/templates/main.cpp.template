@@ -17,17 +17,21 @@ double sigmoid(double value)
 double tree(const std::vector<double>& features)
 {
   double sum = 0;
-  {% for node in trees recursive -%}
-    {% if not node.final -%}
-      if(features[{{ node.feature_index }}] < {{ node.cut_value }}){
-        {{ loop(node.left) }}
-      } else {
-        {{ loop(node.right) }}
-      }
-    {%- else -%}
-      sum += {{ node.weight }};
-    {%- endif %}
-  {%- endfor %}
+  {% for node in trees recursive %}
+    {% if not node.parent %}
+  
+  // tree {{ node.id }}
+    {% endif %}
+    {% if not node.final %}
+  if(features[{{ node.feature_index }}] < {{ node.cut_value }}){
+{{ (node.level + 1) * "  " }}{{ loop(node.left) }}
+{{ (node.level + 1) * "  " }}} else {
+{{ (node.level + 1) * "  " }}{{ loop(node.right) }}
+{{ (node.level + 1) * "  " }}}
+    {%- else %}
+  sum += {{ node.weight }};
+    {%- endif -%}
+  {% endfor %}
   return sum;
 }
 

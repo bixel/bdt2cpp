@@ -11,31 +11,8 @@ double sigmoid(double value)
   return 0.5 + 0.5 * std::tanh(value / 2);
 }
 
-/* @brief a BDT implementation, returning the sum of all tree weights given
- * a feature vector
- */
-double tree(const std::vector<double>& features)
-{
-  double sum = 0;
-  {% for node in trees recursive %}
-    {% if not node.parent %}
+{%+ include 'ensemble.function.template' %}
 
-  // tree {{ node.id }}
-    {% endif %}
-    {% if not node.final %}
-  if(features[{{ node.feature_index }}] < {{ node.cut_value }}){
-{{ (node.level + 1) * "  " }}{{ loop(node.left) }}
-    {% if node.right %}
-{{ (node.level + 1) * "  " }}} else {
-{{ (node.level + 1) * "  " }}{{ loop(node.right) }}
-    {% endif %}
-{{ (node.level + 1) * "  " }}}
-    {%- else %}
-  sum += {{ node.weight }};
-    {%- endif -%}
-  {% endfor %}
-  return sum;
-}
 
 int main(int argc, char const *argv[]) {
   std::vector<double> input;
@@ -43,7 +20,7 @@ int main(int argc, char const *argv[]) {
     input.push_back(std::strtod(argv[i], nullptr));
   }
 
-  auto val = tree(input);
+  auto val = ensemble(input);
   std::cout << val << "\n" << sigmoid(val) << std::endl;
 
   return 0;

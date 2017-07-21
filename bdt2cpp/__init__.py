@@ -110,7 +110,6 @@ def main(input_file, output_file='main.cpp', template='cpp'):
 
     trees = parse_model(input_file)
 
-    # with open(, 'r') as f:
     template = env.get_template(TEMPLATES[template])
 
     with open(path.join(CUR_DIR, output_file), 'w') as f:

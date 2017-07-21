@@ -1,0 +1,25 @@
+/* @brief a BDT implementation, returning the sum of all tree weights given
+ * a feature vector
+ */
+double ensemble(const std::vector<double>& features)
+{
+  double sum = 0;
+  {% for node in trees recursive %}
+    {% if not node.parent %}
+
+  // tree {{ node.id }}
+    {% endif %}
+    {% if not node.final %}
+  if(features[{{ node.feature_index }}] < {{ node.cut_value }}){
+{{ (node.level + 1) * "  " }}{{ loop(node.left) }}
+    {% if node.right %}
+{{ (node.level + 1) * "  " }}} else {
+{{ (node.level + 1) * "  " }}{{ loop(node.right) }}
+    {% endif %}
+{{ (node.level + 1) * "  " }}}
+    {%- else %}
+  sum += {{ node.weight }};
+    {%- endif -%}
+  {% endfor %}
+  return sum;
+}

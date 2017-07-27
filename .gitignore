@@ -9,3 +9,6 @@ __pycache__/
 *~
 *.cpp
 .ipynb_checkpoints/
+htmlcov/
+.coverage
+*.model

@@ -36,7 +36,7 @@ class Node:
 
         match_branch = BRANCH_REGEX.search(line)
         if match_branch:
-            self.cut_value = match_branch.groupdict().get('value')
+            self.cut_value = float(match_branch.groupdict().get('value'))
             self.feature = match_branch.groupdict().get('feature')
             feature_match = FEATURE_REGEX.search(self.feature)
             self.feature_index = feature_match.groupdict().get('id')

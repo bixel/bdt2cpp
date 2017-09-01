@@ -11,8 +11,23 @@ double sigmoid(double value)
   return 0.5 + 0.5 * std::tanh(value / 2);
 }
 
-{%+ include 'ensemble.function.template' %}
+{% if trees | length > 1 %}
+{% for tree in trees %}
+double tree_{{ loop.index0 }}(const std::vector<double>& features);
+{% endfor %}
+{% else %}
+{% set tree_number = 0 %}
+{% set tree = trees[0] %}
+{%+ include('tree.function.template') %}
+{%+ endif %}
 
+double ensemble(const std::vector<double>& features)
+{
+  return
+{% for _ in trees %}
+    tree_{{ loop.index0 }}(features){%- if loop.index < trees | length -%}+{%- endif -%}
+{% endfor %};
+}
 
 int main(int argc, char const *argv[]) {
   std::vector<double> input;

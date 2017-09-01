@@ -9,10 +9,12 @@ p.add_argument('--print-tree', action='store_true', help='''print the parsed
                tree''')
 p.add_argument('model', type=str, help='''filename of the XGBoost model you
                 want to transpile''')
-p.add_argument('-o', '--output', type=str, default='main.cpp', help='''output
-               filename to which the transpiled template will be written.
-               The file will be overwritten without warning! Defaults to
-               `main.cpp`.''')
+p.add_argument('-o', '--output-directory', type=str, default='build', help='''
+               output directory to which the transpiled template will be
+               written. The files inside will be overwritten without warning!
+               Defaults to `build`.''')
+p.add_argument('-m', '--max-trees', type=int, default=None, help='''maximum
+               number of trees per file''')
 
 args = p.parse_args()
 
@@ -20,4 +22,5 @@ if args.print_tree:
     print(*bdt2cpp.parse_model(args.model), sep='\n\n')
     sys.exit()
 
-bdt2cpp.main(args.model, output_file=args.output)
+bdt2cpp.main(args.model, output_dir=args.output_directory,
+             trees_per_file=args.max_trees)

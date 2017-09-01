@@ -1,0 +1,3 @@
+#include <vector>
+
+{% include('tree.function.template') %}

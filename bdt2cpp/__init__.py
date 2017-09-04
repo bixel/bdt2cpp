@@ -137,3 +137,8 @@ def main(input_file, output_dir='build', trees_per_file=None):
     template = env.get_template('main.cpp.template')
     with open(path.join(CUR_DIR, output_dir, 'main.cpp'), 'w') as f:
         f.write(template.render(trees=trees))
+
+    # render makefile
+    template = env.get_template('Makefile.template')
+    with open(path.join(CUR_DIR, output_dir, 'Makefile'), 'w') as f:
+        f.write(template.render(trees=trees))

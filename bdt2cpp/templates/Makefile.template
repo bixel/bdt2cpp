@@ -1,0 +1,14 @@
+{% if trees | length > 1 %}
+TREES = \
+		{% for tree in trees %}
+		tree_{{ loop.index0 }}.cpp \
+		{% endfor %}
+{% endif %}
+
+TREE_OBJS = $(patsubst %.cpp,%.o,$(TREES))
+
+tree_%.o: tree_%.cpp
+	clang++ -std=c++14 -c $<
+
+main: main.cpp $(TREE_OBJS)
+	clang++ -std=c++14 -o main $(TREE_OBJS) main.cpp

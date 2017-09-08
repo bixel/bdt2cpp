@@ -1,7 +1,11 @@
-import jinja2
+""" bdt2cpp
+Transpile your bdt weight file into compilable c++ code.
+"""
+
 from os import path, getcwd, mkdir
 import re
-import numpy as np
+
+import jinja2
 
 from .XGBoostParser import parse_model as parse_model_xgb
 
@@ -21,6 +25,10 @@ def split(arr, splits=2):
 
 
 def main(input_file, output_dir='build', trees_per_file=None):
+    """
+    Read in input file, render templates and write compilable files to
+    output_dir.
+    """
     # template settings
     env = jinja2.Environment(loader=jinja2.PackageLoader('bdt2cpp'),
                              trim_blocks=True, lstrip_blocks=True)
@@ -39,15 +47,15 @@ def main(input_file, output_dir='build', trees_per_file=None):
     if len(trees) > 1:
         tree_template = env.get_template('standalone.function.template')
         for i, tree in enumerate(trees):
-            with open(path.join(CUR_DIR, output_dir, f'tree_{i}.cpp'), 'w') as f:
-                f.write(tree_template.render(tree_number=i, tree=tree))
+            with open(path.join(CUR_DIR, output_dir, f'tree_{i}.cpp'), 'w') as out:
+                out.write(tree_template.render(tree_number=i, tree=tree))
 
     # render main template
     template = env.get_template('main.cpp.template')
-    with open(path.join(CUR_DIR, output_dir, 'main.cpp'), 'w') as f:
-        f.write(template.render(trees=trees))
+    with open(path.join(CUR_DIR, output_dir, 'main.cpp'), 'w') as out:
+        out.write(template.render(trees=trees))
 
     # render makefile
     template = env.get_template('Makefile.template')
-    with open(path.join(CUR_DIR, output_dir, 'Makefile'), 'w') as f:
-        f.write(template.render(trees=trees))
+    with open(path.join(CUR_DIR, output_dir, 'Makefile'), 'w') as out:
+        out.write(template.render(trees=trees))

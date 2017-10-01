@@ -13,4 +13,7 @@ setup(
     long_description=long_description,
     packages=['bdt2cpp'],
     scripts=['bin/bdt2cpp'],
+    install_requires=[
+        'jinja2',
+        ],
 )

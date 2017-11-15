@@ -24,7 +24,8 @@ def split(arr, splits=2):
             + [arr[(splits - 1) * new_size:]])
 
 
-def main(input_file, output_dir='build', trees_per_file=None):
+def main(input_file, output_dir='build', trees_per_file=None,
+         feature_names=None):
     """
     Read in input file, render templates and write compilable files to
     output_dir.
@@ -33,7 +34,7 @@ def main(input_file, output_dir='build', trees_per_file=None):
     env = jinja2.Environment(loader=jinja2.PackageLoader('bdt2cpp'),
                              trim_blocks=True, lstrip_blocks=True)
 
-    full_ensemble = parse_model_xgb(input_file)
+    full_ensemble = parse_model_xgb(input_file, feature_names)
 
     if trees_per_file and len(full_ensemble) > trees_per_file:
         trees = split(full_ensemble, int(len(full_ensemble) / trees_per_file))

@@ -15,6 +15,10 @@ p.add_argument('-o', '--output-directory', type=str, default='build', help='''
                Defaults to `build`.''')
 p.add_argument('-m', '--max-trees', type=int, default=None, help='''maximum
                number of trees per file''')
+p.add_argument('-n', '--feature-names', nargs='*', help='''The list of all
+               feature names, if the model uses named features instead of
+               indexed features. This list must be of the exact same length as
+               the length of the feauture vector.''')
 
 args = p.parse_args()
 
@@ -23,4 +27,4 @@ if args.print_tree:
     sys.exit()
 
 bdt2cpp.main(args.model, output_dir=args.output_directory,
-             trees_per_file=args.max_trees)
+             trees_per_file=args.max_trees, feature_names=args.feature_names)

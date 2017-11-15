@@ -8,11 +8,19 @@ with open(path.join(here, 'README.md')) as f:
 
 setup(
     name='bdt2cpp',
-    version='0.0.2',
+    version='0.0.3',
     description='Transpile BDTs to C++ code.',
     long_description=long_description,
     packages=['bdt2cpp'],
     scripts=['bin/bdt2cpp'],
+    package_data={
+        'bdt2cpp': [
+            'templates/main.cpp.template',
+            'templates/Makefile.template',
+            'templates/standalone.function.template',
+            'templates/tree.function.template',
+            ],
+        },
     install_requires=[
         'jinja2',
         ],

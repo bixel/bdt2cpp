@@ -7,8 +7,11 @@ import sys
 p = argparse.ArgumentParser()
 p.add_argument('--print-tree', action='store_true', help='''print the parsed
                tree''')
-p.add_argument('model', type=str, help='''filename of the XGBoost model you
-                want to transpile''')
+p.add_argument('model', type=str, help='''filename of the BDT model you
+                want to transpile. Supported are XGBoost and TMVA BDTs are
+                supported. If the file ending is `.xgb` or `.xml`, bdt2cpp will
+                use XGBoost or TMVA, respectively. Otherwise, specify the type
+                via the --type argument.''')
 p.add_argument('-o', '--output-directory', type=str, default='build', help='''
                output directory to which the transpiled template will be
                written. The files inside will be overwritten without warning!
@@ -19,6 +22,8 @@ p.add_argument('-n', '--feature-names', nargs='*', help='''The list of all
                feature names, if the model uses named features instead of
                indexed features. This list must be of the exact same length as
                the length of the feauture vector.''')
+p.add_argument('-t', '--type', type=str, default=None, help='''The BDT input
+               type. Can be one of ['TMVA', 'XGBoost'].''')
 
 args = p.parse_args()
 
@@ -27,4 +32,5 @@ if args.print_tree:
     sys.exit()
 
 bdt2cpp.main(args.model, output_dir=args.output_directory,
-             trees_per_file=args.max_trees, feature_names=args.feature_names)
+             trees_per_file=args.max_trees, feature_names=args.feature_names,
+             bdt_type=args.type)

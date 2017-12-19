@@ -68,10 +68,17 @@ def main(input_file, output_dir='build', trees_per_file=None,
             with open(path.join(CUR_DIR, output_dir, f'tree_{i}.cpp'), 'w') as out:
                 out.write(tree_template.render(tree_number=i, tree=tree))
 
+    # TMVA bdts use to normalize all weights
+    if bdt_type == 'tmva':
+        in_tree_norms = [sum([t.weight for t in tlist]) for tlist in trees]
+        norm = sum(in_tree_norms)
+    else:
+        norm = 1
+
     # render main template
     template = env.get_template('main.cpp.template')
     with open(path.join(CUR_DIR, output_dir, 'main.cpp'), 'w') as out:
-        out.write(template.render(trees=trees))
+        out.write(template.render(trees=trees, norm=norm))
 
     # render makefile
     template = env.get_template('Makefile.template')

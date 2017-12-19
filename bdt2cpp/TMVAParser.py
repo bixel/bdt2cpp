@@ -7,12 +7,17 @@ class TMVANode(Node):
     def __init__(self, parent=None, xmlNode=None, weight=None):
         super().__init__(parent=parent)
         self.weight = weight
-        if xmlNode.get('nType'):
+        if int(xmlNode.get('nType')) != 0:
             self.weight *= float(xmlNode.get('nType'))
         if len(xmlNode) == 2:
             leftXML, rightXML = list(xmlNode)
-            self.left = TMVANode(self, leftXML, weight)
-            self.right = TMVANode(self, rightXML, weight)
+            assert(leftXML.get('pos') == 'l')
+            assert(rightXML.get('pos') == 'r')
+
+            # The left and right side are swapped between TMVA and XGBoost
+            # therefore rightXML is added on the left side and vice versa
+            self.left = TMVANode(self, rightXML, weight)
+            self.right = TMVANode(self, leftXML, weight)
             self.cut_value = xmlNode.get('Cut')
             self.feature = xmlNode.get('IVar')
             self.feature_index = xmlNode.get('IVar')

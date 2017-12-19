@@ -29,6 +29,11 @@ double ensemble(const std::vector<double>& features)
 {% endfor %};
 }
 
+double normed(double value)
+{
+  return value / {{ norm }};
+}
+
 int main(int argc, char const *argv[]) {
   std::vector<double> input;
   for(int i=1; i<argc; ++i){
@@ -36,7 +41,10 @@ int main(int argc, char const *argv[]) {
   }
 
   auto val = ensemble(input);
-  std::cout << val << "\n" << sigmoid(val) << std::endl;
+  std::cout << "raw: " << val << "\n"
+    << "sigmoid: " << sigmoid(val) << "\n"
+    << "normed: " << normed(val) << "\n"
+    << std::endl;
 
   return 0;
 }

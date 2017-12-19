@@ -8,7 +8,7 @@ with open(path.join(here, 'README.md')) as f:
 
 setup(
     name='bdt2cpp',
-    version='0.0.3',
+    version='0.1.0',
     description='Transpile BDTs to C++ code.',
     long_description=long_description,
     packages=['bdt2cpp'],

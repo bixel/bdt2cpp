@@ -15,10 +15,14 @@ class TMVANode(Node):
             assert(rightXML.get('pos') == 'r')
 
             # The left and right side are swapped between TMVA and XGBoost
-            # therefore rightXML is added on the left side and vice versa
-            self.left = TMVANode(self, rightXML, weight)
-            self.right = TMVANode(self, leftXML, weight)
-            self.cut_value = xmlNode.get('Cut')
+            # if cutType is "selecting Background"
+            if xmlNode.get('cType') == '1':
+                self.left = TMVANode(self, leftXML, weight)
+                self.right = TMVANode(self, rightXML, weight)
+            else:
+                self.left = TMVANode(self, rightXML, weight)
+                self.right = TMVANode(self, leftXML, weight)
+            self.cut_value = float(xmlNode.get('Cut'))
             self.feature = xmlNode.get('IVar')
             self.feature_index = xmlNode.get('IVar')
             self.final = False

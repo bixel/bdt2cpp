@@ -38,4 +38,4 @@ if args.print_tree:
 
 bdt2cpp.main(args.model, output_dir=args.output_directory,
              trees_per_file=args.max_trees, feature_names=args.feature_names,
-             bdt_type=args.type)
+             bdt_type=args.type, decimals=args.rendered_decimals)

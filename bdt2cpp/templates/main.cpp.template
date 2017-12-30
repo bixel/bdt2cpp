@@ -31,7 +31,7 @@ double ensemble(const std::vector<double>& features)
 
 double normed(double value)
 {
-  return value / {{ norm }};
+  return value / {{ norm | decimal(max_decimals) }};
 }
 
 int main(int argc, char const *argv[]) {

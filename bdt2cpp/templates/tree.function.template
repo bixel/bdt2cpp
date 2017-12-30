@@ -10,7 +10,7 @@ double tree_{{ tree_number }}(const std::vector<double>& features)
   // tree {{ node.id }}
     {% endif %}
     {% if not node.final %}
-  if(features[{{ node.feature_index }}] < {{ node.cut_value }}){
+  if(features[{{ node.feature_index }}] < {{ node.cut_value | decimal(max_decimals) }}){
 {{ (node.level + 1) * "  " }}{{ loop(node.left) }}
     {% if node.right %}
 {{ (node.level + 1) * "  " }}} else {
@@ -18,7 +18,7 @@ double tree_{{ tree_number }}(const std::vector<double>& features)
     {% endif %}
 {{ (node.level + 1) * "  " }}}
     {%- else %}
-  sum += {{ node.weight }};
+  sum += {{ node.weight | decimal(max_decimals) }};
     {%- endif -%}
   {% endfor %}
   return sum;

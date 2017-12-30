@@ -24,6 +24,11 @@ p.add_argument('-n', '--feature-names', nargs='*', help='''The list of all
                the length of the feauture vector.''')
 p.add_argument('-t', '--type', type=str, default=None, help='''The BDT input
                type. Can be one of ['TMVA', 'XGBoost'].''')
+p.add_argument('-d', '--rendered-decimals', type=int, default=None, help='''
+               Number of decimal digits used in generated source code (default
+               is python print default). Especially TMVA ".class.C" files seems
+               to use only 6 significant digits internally which might lead to
+               some numeric differences when using a large number of BDTs.''')
 
 args = p.parse_args()
 

@@ -5,6 +5,7 @@ Transpile your bdt weight file into compilable c++ code.
 from os import path, getcwd, mkdir
 import re
 
+import numpy as np
 import jinja2
 
 from .XGBoostParser import parse_model as parse_model_xgb
@@ -35,8 +36,15 @@ def split(arr, splits=2):
             + [arr[(splits - 1) * new_size:]])
 
 
+def round_to_decimals(value, decimals=None):
+    """ Return up to `decimals` significant digits of given number"""
+    if decimals is None:
+        return value
+    return np.round(value, -int(np.floor(np.log10(np.abs(value)))) + (decimals - 1))
+
+
 def main(input_file, output_dir='build', trees_per_file=None,
-         feature_names=None, bdt_type=None):
+         feature_names=None, bdt_type=None, decimals=None):
     """
     Read in input file, render templates and write compilable files to
     output_dir.
@@ -44,6 +52,7 @@ def main(input_file, output_dir='build', trees_per_file=None,
     # template settings
     env = jinja2.Environment(loader=jinja2.PackageLoader('bdt2cpp'),
                              trim_blocks=True, lstrip_blocks=True)
+    env.filters['decimal'] = round_to_decimals
 
     # extract the bdt type if none is specified explicitly
     if not bdt_type:
@@ -66,7 +75,8 @@ def main(input_file, output_dir='build', trees_per_file=None,
         tree_template = env.get_template('standalone.function.template')
         for i, tree in enumerate(trees):
             with open(path.join(CUR_DIR, output_dir, f'tree_{i}.cpp'), 'w') as out:
-                out.write(tree_template.render(tree_number=i, tree=tree))
+                out.write(tree_template.render(tree_number=i, tree=tree,
+                                               max_decimals=decimals))
 
     # TMVA bdts use to normalize all weights
     if bdt_type == 'tmva':
@@ -78,7 +88,7 @@ def main(input_file, output_dir='build', trees_per_file=None,
     # render main template
     template = env.get_template('main.cpp.template')
     with open(path.join(CUR_DIR, output_dir, 'main.cpp'), 'w') as out:
-        out.write(template.render(trees=trees, norm=norm))
+        out.write(template.render(trees=trees, norm=norm, max_decimals=6))
 
     # render makefile
     template = env.get_template('Makefile.template')

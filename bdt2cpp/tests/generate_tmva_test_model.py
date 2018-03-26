@@ -10,6 +10,7 @@ from ROOT import TMVA
 import root_pandas
 import pandas as pd
 
+from utils import prepare_test_env
 
 # create a TNtuple
 ntuple = ROOT.TNtuple('ntuple', 'ntuple', 'x:y:signal')
@@ -22,8 +23,9 @@ for i in range(10000):
     # throw a background event centered at (-1,-1)
     ntuple.Fill(ROOT.gRandom.Gaus(-1,1), ROOT.gRandom.Gaus(-1,1), 0)
 
+prepare_test_env()
 
-output_file = ROOT.TFile('test.root', 'RECREATE')
+output_file = ROOT.TFile('build/test.root', 'RECREATE')
 tmva_options = ':'.join([
     '!V',
     '!Silent',

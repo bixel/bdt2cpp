@@ -6,6 +6,8 @@ from xgboost import XGBClassifier
 import pandas as pd
 import os
 
+from utils import prepare_test_env
+
 scenarios = [
     {  # for "manual" debugging
         'n_estimators': 5,
@@ -28,15 +30,14 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.7)
 df_test = pd.DataFrame(X_test)
 df_test['target'] = y_test
 
-if not os.path.isdir('./build'):
-    os.mkdir('build')
+prepare_test_env()
 
 for i, kwargs in enumerate(scenarios):
     classifier = XGBClassifier(**kwargs)
     classifier.fit(X_train, y_train)
     model_dir = os.path.join(os.path.dirname(__file__), f'build/model-{i}.txt')
-    classifier.booster().dump_model(
-        os.path.join(os.path.dirname(__file__), f'build/model-{i}.txt'))
+    classifier.get_booster().dump_model(
+        os.path.join(os.path.dirname(__file__), f'build/model-{i}.xgb'))
     probas = classifier.predict_proba(X_test)
     df_test[f'p_{i}_0'] = probas[:, 0]
     df_test[f'p_{i}_1'] = probas[:, 1]

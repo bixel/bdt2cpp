@@ -13,6 +13,8 @@ setup(
     long_description=long_description,
     packages=['bdt2cpp'],
     scripts=['bin/bdt2cpp'],
+    author='Kevin Heinicke <kevin@kehei.de>',
+    url='https://github.com/bixel/bdt2cpp',
     package_data={
         'bdt2cpp': [
             'templates/main.cpp.template',
@@ -25,4 +27,13 @@ setup(
         'jinja2',
         'numpy',
         ],
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: Artificial Intelligence',
+        'Topic :: Scientific/Engineering :: Physics',
+        'Topic :: Software Development :: Code Generators',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3.6',
+    ],
 )

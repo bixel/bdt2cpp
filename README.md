@@ -18,6 +18,21 @@ pip install git+https://github.com/bixel/bdt2cpp.git
 ```
 for the current master version.
 
+### lxplus
+
+If you want to use bdt2cpp on CERNs lxplus machines, you need to get hold of
+minimum python3.6. According to [CERNs Service Article
+KB0000730](https://cern.service-now.com/service-portal/article.do?n=KB0000730),
+one way to install the tool is:
+
+```sh
+# On lxplus
+scl enable rh-python36
+
+# this will install bdt2cpp to your `~/.local/` directory
+pip install --user bdt2cpp
+```
+
 ## Usage
 
 To generate a minimal Makefile together with the C++ code inside a `build/`
@@ -31,6 +46,10 @@ have installed `clang`, you can simply
 cd build
 make
 ```
+
+*Note for CERN Users*: Currently, the Makefile uses clang as the default
+compiler. You might need to adjust that in the generated file (inside the
+`build/` directory)
 
 The generated executable is essentially a very minimal placeholder, if you had
 3 input features you could quickly cross-check the predictions against the

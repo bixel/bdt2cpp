@@ -1,7 +1,9 @@
 class Node:
+    """ A simple node """
     root_id_counter = 0
 
     def __init__(self, parent=None):
+        """ Init function """
         self.left = None
         self.right = None
         self.parent = parent

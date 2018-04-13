@@ -21,7 +21,8 @@ p.add_argument('-m', '--max-trees', type=int, default=None, help='''maximum
 p.add_argument('-n', '--feature-names', nargs='*', help='''The list of all
                feature names, if the model uses named features instead of
                indexed features. This list must be of the exact same length as
-               the length of the feauture vector.''')
+               the length of the feauture vector. The names need to be
+               separated by spaces like `-n f1 f2 f3`.''')
 p.add_argument('-t', '--type', type=str, default=None, help='''The BDT input
                type. Can be one of ['TMVA', 'XGBoost'].''')
 

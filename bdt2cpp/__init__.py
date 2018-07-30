@@ -9,18 +9,21 @@ import jinja2
 
 from .XGBoostParser import parse_model as parse_model_xgb
 from .TMVAParser import parse_model as parse_model_tmva
+from .PickleLoader import load_model as load_pickle_model
 
 CUR_DIR = getcwd()
 TEMPLATE_DIR = path.join(path.abspath(path.dirname(__file__)), 'templates')
 PARSERS = {
         'tmva': parse_model_tmva,
         'xgboost': parse_model_xgb,
+        'pickle': load_pickle_model,
         }
 TYPE_ENDINGS = {
         '.xgb': 'xgboost',
         '.xgboost': 'xgboost',
         '.xml': 'tmva',
         '.tmva': 'tmva',
+        '.pkl': 'pickle',
         }
 
 

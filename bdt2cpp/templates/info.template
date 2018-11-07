@@ -1,0 +1,4 @@
+These files have been generated with bdt2cpp {{ package_version }}:
+{% for file in files %}
+- {{ file }}
+{% endfor %}

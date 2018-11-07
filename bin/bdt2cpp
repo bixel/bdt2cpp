@@ -8,10 +8,11 @@ p = argparse.ArgumentParser()
 p.add_argument('--print-tree', action='store_true', help='''print the parsed
                tree''')
 p.add_argument('model', type=str, help='''filename of the BDT model you
-                want to transpile. Supported are XGBoost and TMVA BDTs are
-                supported. If the file ending is `.xgb` or `.xml`, bdt2cpp will
-                use XGBoost or TMVA, respectively. Otherwise, specify the type
-                via the --type argument.''')
+                want to transpile. XGBoost, TMVA and pickled XGBoost BDTs are
+                supported. If the file ending is `.xgb` or `.pkl`, bdt2cpp will
+                use XGBoost or pickled XGBoost, respectively. If the file
+                ending is `.xml`, bdt2cpp will use the TMVA parser.
+                You may also specify the type via the --type argument.''')
 p.add_argument('-o', '--output-directory', type=str, default='build', help='''
                output directory to which the transpiled template will be
                written. The files inside will be overwritten without warning!
@@ -24,7 +25,8 @@ p.add_argument('-n', '--feature-names', nargs='*', help='''The list of all
                the length of the feauture vector. The names need to be
                separated by spaces like `-n f1 f2 f3`.''')
 p.add_argument('-t', '--type', type=str, default=None, help='''The BDT input
-               type. Can be one of ['TMVA', 'XGBoost'].''')
+               type. Can be one of ['TMVA', 'XGBoost', 'Pickle'].
+               Overrides the type deduced from the file ending.''')
 
 args = p.parse_args()
 

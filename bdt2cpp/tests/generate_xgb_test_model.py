@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 from sklearn.datasets import make_classification
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 from xgboost import XGBClassifier
 import pandas as pd
 import os

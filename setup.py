@@ -8,9 +8,10 @@ with open(path.join(here, 'README.md')) as f:
 
 setup(
     name='bdt2cpp',
-    version='0.1.3',
+    version='0.2.0',
     description='Transpile BDTs to C++ code.',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     packages=['bdt2cpp'],
     scripts=['bin/bdt2cpp'],
     author='Kevin Heinicke <kevin@kehei.de>',
@@ -21,6 +22,7 @@ setup(
             'templates/Makefile.template',
             'templates/standalone.function.template',
             'templates/tree.function.template',
+            'templates/info.template',
             ],
         },
     install_requires=[

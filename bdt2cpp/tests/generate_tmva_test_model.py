@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """ Generate a dummy TMVA BDT model, following this blog post
 https://aholzner.wordpress.com/2011/08/27/a-tmva-example-in-pyroot/
 and this bug report... https://root-forum.cern.ch/t/factory-object-has-no-attribute-addvariable-in-tmva-python/25090/4
@@ -7,7 +7,6 @@ and this bug report... https://root-forum.cern.ch/t/factory-object-has-no-attrib
 import ROOT
 from ROOT import TMVA
 
-import root_pandas
 import pandas as pd
 
 from utils import prepare_test_env

@@ -55,6 +55,8 @@ def main(input_file, output_dir='build', trees_per_file=None,
 
     # parse the bdt file
     full_ensemble = PARSERS[bdt_type](input_file, feature_names)
+    # TODO get number of feature
+    n_features = 0
 
     if trees_per_file and len(full_ensemble) > trees_per_file:
         trees = split(full_ensemble, int(len(full_ensemble) / trees_per_file))
@@ -69,7 +71,8 @@ def main(input_file, output_dir='build', trees_per_file=None,
         tree_template = env.get_template('standalone.function.template')
         for i, tree in enumerate(trees):
             with open(path.join(CUR_DIR, output_dir, f'tree_{i}.cpp'), 'w') as out:
-                out.write(tree_template.render(tree_number=i, tree=tree))
+                out.write(tree_template.render(tree_number=i, tree=tree,
+                                               n_features=n_features))
 
     # TMVA bdts use to normalize all weights
     if bdt_type == 'tmva':
@@ -81,7 +84,7 @@ def main(input_file, output_dir='build', trees_per_file=None,
     # render main template
     template = env.get_template('main.cpp.template')
     with open(path.join(CUR_DIR, output_dir, 'main.cpp'), 'w') as out:
-        out.write(template.render(trees=trees, norm=norm))
+        out.write(template.render(trees=trees, norm=norm, n_features=n_features))
 
     # render makefile
     template = env.get_template('Makefile.template')

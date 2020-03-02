@@ -1,7 +1,7 @@
 /* @brief a BDT implementation, returning the sum of all tree weights given
  * a feature vector
  */
-double tree_{{ tree_number }}(const std::vector<double>& features)
+double tree_{{ tree_number }}(const std::array<double, {{ n_features }}>& features)
 {
   double sum = 0;
   {% for node in tree recursive %}

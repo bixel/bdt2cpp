@@ -1,7 +1,7 @@
 {% include('info.template') %}
 
 #include <iostream>
-#include <vector>
+#include <array>
 #include <cmath>
 
 /* @brief a logistic function
@@ -15,7 +15,7 @@ double sigmoid(double value)
 
 {% if trees | length > 1 %}
 {% for tree in trees %}
-double tree_{{ loop.index0 }}(const std::vector<double>& features);
+double tree_{{ loop.index0 }}(const std::array<double, {{ n_features }}>& features);
 {% endfor %}
 {% else %}
 {% set tree_number = 0 %}
@@ -23,7 +23,7 @@ double tree_{{ loop.index0 }}(const std::vector<double>& features);
 {%+ include('tree.function.template') %}
 {%+ endif %}
 
-double ensemble(const std::vector<double>& features)
+double ensemble(const std::array<double, {{ n_features }}>& features)
 {
   return
 {% for _ in trees %}
@@ -37,7 +37,7 @@ double normed(double value)
 }
 
 int main(int argc, char const *argv[]) {
-  std::vector<double> input;
+  std::array<double, {{ n_features }}> input;
   for(int i=1; i<argc; ++i){
     input.push_back(std::strtod(argv[i], nullptr));
   }

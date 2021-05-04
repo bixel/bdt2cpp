@@ -1,3 +1,9 @@
+# UNMAINTAINED
+
+If you somehow stumbled over this: See e.g. [treelite](https://github.com/dmlc/treelite) for an alternative.
+
+---
+
 # Generate C++ representations of boosted decision trees
 
 This project tries to provide a generic functionality to transpile trained BDTs
